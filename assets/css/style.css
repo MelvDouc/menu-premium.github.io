@@ -1,0 +1,57 @@
+:root {
+  --orange1: rgb(253, 107, 1);
+  --orange2: rgb(254, 135, 0);
+  --orange3: rgb(255, 145, 0);
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  display: grid;
+  grid-template-rows: 1fr 8fr;
+}
+
+h1 {
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1.75rem;
+  letter-spacing: 3px;
+  padding: 0.66em 0.75em;
+  color: #fff;
+  background: var(--orange2);
+  background: radial-gradient(var(--orange1), var(--orange2), var(--orange3));
+}
+
+main {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1em;
+  padding: 1em;
+}
+
+main > div {
+  width: 400px;
+  height: 300px;
+  border: 2px solid #333;
+}
+
+/* #map {
+} */
