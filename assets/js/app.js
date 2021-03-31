@@ -39,7 +39,7 @@ function initMap() {
   addMarker({
     coords: userCoords,
     iconImage: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
-    content: "<h2>Yutz</h2>",
+    content: "<h2>Vous êtes ici.</h2>",
   });
 
   fetch("./restos.json")
@@ -53,7 +53,6 @@ function initMap() {
           },
           content: `<h2>${foodPlace.restaurantName}</h2>`,
         });
-        console.log(foodPlace);
       });
     })
     .catch((err) => console.log(err));
