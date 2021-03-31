@@ -20,19 +20,6 @@
     </main>
 
     <script src="./assets/js/app.js"></script>
-    <script>
-      fetch("./.env")
-        .then((res) => res.text())
-        .then((data) => {
-          let scr = document.createElement("script");
-          scr.src = `https://maps.googleapis.com/maps/api/js?key=${data}&callback=initMap&libraries=&v=weekly`;
-          scr.async = true;
-          document.body.appendChild(scr);
-        });
-    </script>
-    <!-- <script
-      src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=initMap&libraries=&v=weekly"
-      async
-    ></script> -->
+    <script src="./assets/js/functions.js"></script>
   </body>
 </html>

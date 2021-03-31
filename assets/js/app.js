@@ -1,5 +1,17 @@
-// https://stackoverflow.com/questions/39329874/googlemaps-api-key-for-localhost
 // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
+
+fetch("./.env")
+  .then((res) => res.text())
+  .then((data) => {
+    let API_script = document.createElement("script");
+    API_script.src = `https://maps.googleapis.com/maps/api/js?key=${data}&callback=initMap&libraries=&v=weekly`;
+    API_script.async = true;
+    document.body.appendChild(API_script);
+  });
+
+// ====================
+// ====================
+// ====================
 
 let userCoords;
 
@@ -12,9 +24,25 @@ if (navigator.geolocation) {
   });
 } else alert("Votre navigateur n'est pas équipé de géolocalisation.");
 
+// ====================
+// ====================
+// ====================
+
+let foodPlaces = [];
+
+fetch("./restos.json")
+  .then((res) => res.json())
+  .then((data) => {
+    data.forEach((foodPlace) => foodPlaces.push(foodPlace));
+  });
+
+// ====================
+// ====================
+// ====================
+
 function initMap() {
   let options = {
-    zoom: 13,
+    zoom: 5,
     center: userCoords,
   };
   let map = new google.maps.Map(document.getElementById("map"), options);
@@ -42,18 +70,20 @@ function initMap() {
     content: "<h2>Vous êtes ici.</h2>",
   });
 
-  fetch("./restos.json")
-    .then((res) => res.json())
-    .then((data) => {
-      data.forEach((foodPlace) => {
-        addMarker({
-          coords: {
-            lat: parseFloat(foodPlace.lat),
-            lng: parseFloat(foodPlace.long),
-          },
-          content: `<h2>${foodPlace.restaurantName}</h2>`,
-        });
-      });
-    })
-    .catch((err) => console.log(err));
+  foodPlaces.forEach((foodPlace) => {
+    let address = foodPlace.address.split(",");
+    addMarker({
+      coords: {
+        lat: parseFloat(foodPlace.lat),
+        lng: parseFloat(foodPlace.long),
+      },
+      content: `
+      <h2>${foodPlace.restaurantName}</h2>
+      <address>
+        <p>${address[0]}</p>
+        <p>${address[1].trim()}</p>
+      </address>
+      `,
+    });
+  });
 }
