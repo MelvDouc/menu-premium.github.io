@@ -1,5 +1,8 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
 
+const g_map = document.getElementById("map");
+const foodPlacesList = document.getElementById("food-places");
+
 // ====================
 // Récupérer la clé API Google cachée dans le fichier .env et insérer le script correspondant
 // ====================
@@ -111,7 +114,7 @@ fetch("./restos.json")
         averageRatings,
         comments
       );
-      document.getElementById("food-places").append(foodPlaceCard);
+      foodPlacesList.append(foodPlaceCard);
     });
   });
 
