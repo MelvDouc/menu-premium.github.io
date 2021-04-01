@@ -1,5 +1,8 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
 
+// ====================
+// Récupérer la clé API Google cachée dans le fichier .env et insérer le script correspondant
+// ====================
 fetch("./.env")
   .then((res) => res.text())
   .then((data) => {
@@ -10,7 +13,58 @@ fetch("./.env")
   });
 
 // ====================
+// Créer une classe pour insérer les restaurants à côté de la carte
 // ====================
+
+class FoodPlaceCard {
+  constructor(
+    name,
+    streetAddress,
+    zipCode,
+    averageRatings,
+    customerComments = []
+  ) {
+    this.name = name;
+    this.streetAddress = streetAddress;
+    this.zipCode = zipCode;
+    this.averageRatings = averageRatings;
+    this.customerComments = customerComments;
+
+    let div = document.createElement("div");
+    div.classList.add("food-place");
+
+    let h2 = document.createElement("h2");
+    h2.textContent = this.name;
+
+    let fullAddress = document.createElement("address");
+    let streetAddressParagraph = document.createElement("p");
+    streetAddressParagraph.textContent = this.streetAddress;
+    let zipCodeParagraph = document.createElement("p");
+    zipCodeParagraph.textContent = this.zipCode;
+    fullAddress.append(streetAddressParagraph, zipCodeParagraph);
+
+    let reviews = document.createElement("div");
+    reviews.classList.add("reviews");
+    let starsDiv = document.createElement("div");
+    starsDiv.classList.add("stars");
+    starsDiv.textContent = this.averageRatings;
+    let commentUl = document.createElement("ul");
+    commentUl.classList.add("comments");
+    this.customerComments.forEach((comm) => {
+      let li = document.createElement("li");
+      li.textContent = comm;
+      commentUl.append(li);
+    });
+    reviews.append(starsDiv, commentUl);
+
+    div.append(h2, fullAddress, reviews);
+
+    return div;
+  }
+}
+
+// ====================
+// Obtenir les coordonnées de l'utilisateur
 // ====================
 
 let userCoords;
@@ -25,7 +79,7 @@ if (navigator.geolocation) {
 } else alert("Votre navigateur n'est pas équipé de géolocalisation.");
 
 // ====================
-// ====================
+// Insérer les infos utiles restaurants au moyen de la classe et les stocker dans une variable
 // ====================
 
 let foodPlaces = [];
@@ -33,11 +87,30 @@ let foodPlaces = [];
 fetch("./restos.json")
   .then((res) => res.json())
   .then((data) => {
-    data.forEach((foodPlace) => foodPlaces.push(foodPlace));
+    data.forEach((foodPlace) => {
+      foodPlaces.push(foodPlace);
+      let streetAddress = foodPlace.address.split(",")[0];
+      let zipCode = foodPlace.address.split(",")[1].trim();
+
+      let averageRatings =
+        foodPlace.ratings.reduce((a, obj) => a + obj.stars, 0) /
+        foodPlace.ratings.length;
+
+      let comments = foodPlace.ratings.map((item) => item.comment);
+
+      let foodPlaceCard = new FoodPlaceCard(
+        foodPlace.restaurantName,
+        streetAddress,
+        zipCode,
+        averageRatings,
+        comments
+      );
+      document.getElementById("food-places").append(foodPlaceCard);
+    });
   });
 
 // ====================
-// ====================
+// Fonction de gestion de la carte
 // ====================
 
 function initMap() {
@@ -47,11 +120,11 @@ function initMap() {
   };
   let map = new google.maps.Map(document.getElementById("map"), options);
 
-  // Add marker function
+  // Fonction de marqueur
   const addMarker = (props) => {
     let marker = new google.maps.Marker({
       position: props.coords,
-      map: map, // to what map: the above map
+      map: map, // quelle carte?: la carte ci-dessus
     });
     if (props.iconImage) marker.setIcon(props.iconImage);
     if (props.content) {
