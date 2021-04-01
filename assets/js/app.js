@@ -22,12 +22,14 @@ class FoodPlaceCard {
     streetAddress,
     zipCode,
     averageRatings,
+    allRatings = [],
     customerComments = []
   ) {
     this.name = name;
     this.streetAddress = streetAddress;
     this.zipCode = zipCode;
     this.averageRatings = averageRatings;
+    this.allRatings = allRatings;
     this.customerComments = customerComments;
 
     let div = document.createElement("div");
@@ -44,12 +46,10 @@ class FoodPlaceCard {
     let reviews = document.createElement("div");
     reviews.classList.add("reviews");
     let commentUl = document.createElement("ul");
-    this.customerComments.forEach((comm) => {
-      if (comm) {
-        let li = document.createElement("li");
-        li.textContent = comm;
-        commentUl.append(li);
-      }
+    this.customerComments.forEach((comm, i) => {
+      let li = document.createElement("li");
+      li.innerHTML = `<strong>(${allRatings[i]}/5)</strong> ${comm}`;
+      commentUl.append(li);
     });
     reviews.append(commentUl);
 
@@ -102,6 +102,7 @@ fetch("./restos.json")
         foodPlace.ratings.reduce((a, obj) => a + obj.stars, 0) /
         foodPlace.ratings.length;
 
+      let allRatings = foodPlace.ratings.map((item) => item.stars);
       let comments = foodPlace.ratings.map((item) => item.comment);
 
       let foodPlaceCard = new FoodPlaceCard(
@@ -109,6 +110,7 @@ fetch("./restos.json")
         streetAddress,
         zipCode,
         averageRatings,
+        allRatings,
         comments
       );
       document.getElementById("food-places-list").append(foodPlaceCard);
