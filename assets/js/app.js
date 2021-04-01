@@ -40,7 +40,20 @@ class FoodPlaceCard {
     starsDiv.style.backgroundSize = `${(this.averageRatings / 5) * 100}% 100%`;
     let starsImg = document.createElement("img");
     starsImg.src = "./assets/img/blank-stars.png";
-    starsDiv.append(starsImg);
+
+    let reviews = document.createElement("div");
+    reviews.classList.add("reviews");
+    let commentUl = document.createElement("ul");
+    this.customerComments.forEach((comm) => {
+      if (comm) {
+        let li = document.createElement("li");
+        li.textContent = comm;
+        commentUl.append(li);
+      }
+    });
+    reviews.append(commentUl);
+
+    starsDiv.append(starsImg, reviews);
     h2.append(starsDiv);
 
     let fullAddress = document.createElement("address");
@@ -50,18 +63,7 @@ class FoodPlaceCard {
     zipCodeParagraph.textContent = this.zipCode;
     fullAddress.append(streetAddressParagraph, zipCodeParagraph);
 
-    let reviews = document.createElement("div");
-    reviews.classList.add("reviews");
-    let commentUl = document.createElement("ul");
-    commentUl.classList.add("comments");
-    this.customerComments.forEach((comm) => {
-      let li = document.createElement("li");
-      li.textContent = comm;
-      commentUl.append(li);
-    });
-    reviews.append(commentUl);
-
-    div.append(h2, fullAddress, reviews);
+    div.append(h2, fullAddress);
 
     return div;
   }
