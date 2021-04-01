@@ -13,7 +13,7 @@ fetch("./.env")
   });
 
 // ====================
-// Créer une classe pour insérer les restaurants à côté de la carte
+// Créer une classe pour insérer la liste des restaurants à côté de la carte
 // ====================
 
 class FoodPlaceCard {
@@ -35,6 +35,13 @@ class FoodPlaceCard {
 
     let h2 = document.createElement("h2");
     h2.textContent = this.name;
+    let starsDiv = document.createElement("div");
+    starsDiv.classList.add("stars");
+    starsDiv.style.backgroundSize = `${(this.averageRatings / 5) * 100}% 100%`;
+    let starsImg = document.createElement("img");
+    starsImg.src = "./assets/img/blank-stars.png";
+    starsDiv.append(starsImg);
+    h2.append(starsDiv);
 
     let fullAddress = document.createElement("address");
     let streetAddressParagraph = document.createElement("p");
@@ -45,9 +52,6 @@ class FoodPlaceCard {
 
     let reviews = document.createElement("div");
     reviews.classList.add("reviews");
-    let starsDiv = document.createElement("div");
-    starsDiv.classList.add("stars");
-    starsDiv.textContent = this.averageRatings;
     let commentUl = document.createElement("ul");
     commentUl.classList.add("comments");
     this.customerComments.forEach((comm) => {
@@ -55,7 +59,7 @@ class FoodPlaceCard {
       li.textContent = comm;
       commentUl.append(li);
     });
-    reviews.append(starsDiv, commentUl);
+    reviews.append(commentUl);
 
     div.append(h2, fullAddress, reviews);
 
