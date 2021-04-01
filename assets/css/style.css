@@ -49,8 +49,23 @@ main {
 
 main > div {
   height: 500px;
-  border: 2px solid #333;
   width: 47.5%;
+}
+
+#food-places-list,
+#map {
+  border: 2px solid #333;
+}
+
+#food-places {
+  display: grid;
+  grid-template-rows: 50px;
+}
+
+#food-places h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 li {
@@ -65,7 +80,7 @@ li {
   padding: 0.5em;
 }
 
-.food-place h2 {
+.food-place h3 {
   text-transform: uppercase;
   margin: 0;
   display: flex;

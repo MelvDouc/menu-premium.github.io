@@ -1,8 +1,5 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
 
-const g_map = document.getElementById("map");
-const foodPlacesList = document.getElementById("food-places");
-
 // ====================
 // Récupérer la clé API Google cachée dans le fichier .env et insérer le script correspondant
 // ====================
@@ -36,8 +33,8 @@ class FoodPlaceCard {
     let div = document.createElement("div");
     div.classList.add("food-place");
 
-    let h2 = document.createElement("h2");
-    h2.textContent = this.name;
+    let h3 = document.createElement("h3");
+    h3.textContent = this.name;
     let starsDiv = document.createElement("div");
     starsDiv.classList.add("stars");
     starsDiv.style.backgroundSize = `${(this.averageRatings / 5) * 100}% 100%`;
@@ -57,7 +54,7 @@ class FoodPlaceCard {
     reviews.append(commentUl);
 
     starsDiv.append(starsImg, reviews);
-    h2.append(starsDiv);
+    h3.append(starsDiv);
 
     let fullAddress = document.createElement("address");
     let streetAddressParagraph = document.createElement("p");
@@ -66,7 +63,7 @@ class FoodPlaceCard {
     zipCodeParagraph.textContent = this.zipCode;
     fullAddress.append(streetAddressParagraph, zipCodeParagraph);
 
-    div.append(h2, fullAddress);
+    div.append(h3, fullAddress);
 
     return div;
   }
@@ -114,7 +111,7 @@ fetch("./restos.json")
         averageRatings,
         comments
       );
-      foodPlacesList.append(foodPlaceCard);
+      document.getElementById("food-places-list").append(foodPlaceCard);
     });
   });
 
